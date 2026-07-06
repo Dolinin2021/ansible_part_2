@@ -24,26 +24,76 @@
 
 ### Задание 1
 
-`Приведите ответ в свободной форме........`
+1. Скачивание и распаковка архиваСценарий создает папку и скачивает архив Apache Kafka с официального сайта.
 
-1. `Заполните здесь этапы выполнения, если требуется ....`
-2. `Заполните здесь этапы выполнения, если требуется ....`
-3. `Заполните здесь этапы выполнения, если требуется ....`
-4. `Заполните здесь этапы выполнения, если требуется ....`
-5. `Заполните здесь этапы выполнения, если требуется ....`
-6. 
+```yaml
+---
+- name: Скачивание и распаковка архива
+  hosts: all
+  become: yes
+  tasks:
+    - name: Создать папку для распаковки
+      ansible.builtin.file:
+        path: /opt/kafka_dir
+        state: directory
+        mode: '0755'
 
-```
-Поле для вставки кода...
-....
-....
-....
-....
+    - name: Скачать архив Apache Kafka
+      ansible.builtin.get_url:
+        url: https://apache.org
+        dest: /tmp/kafka.tgz
+
+    - name: Распаковать архив
+      ansible.builtin.unarchive:
+        src: /tmp/kafka.tgz
+        dest: /opt/kafka_dir
+        remote_src: yes
+
 ```
 
 `При необходимости прикрепитe сюда скриншоты
 ![Название скриншота 1](ссылка на скриншот 1)`
 
+2. Установка и запуск tunedСценарий ставит пакет, запускает службу и добавляет ее в автозагрузку.
+
+```yaml
+---
+- name: Установка и настройка службы tuned
+  hosts: all
+  become: yes
+  tasks:
+    - name: Установить пакет tuned
+      ansible.builtin.package:
+        name: tuned
+        state: present
+
+    - name: Запустить tuned и добавить в автозагрузку
+      ansible.builtin.service:
+        name: tuned
+        state: started
+        enabled: yes
+
+```
+
+3. Изменение приветствия системы (motd)Сценарий задает новое приветствие, используя системную переменную.
+
+```yaml
+---
+- name: Изменение приветствия системы (motd)
+  hosts: all
+  become: yes
+  vars:
+    new_motd: "Добро пожаловать на наш защищенный сервер!\n"
+  tasks:
+    - name: Записать новое приветствие в файл
+      ansible.builtin.copy:
+        content: "{{ new_motd }}"
+        dest: /etc/motd
+        mode: '0644'
+
+```
+
+Рекомендация: Для запуска сценариев каждый блок кода сохранён в отдельный файл с расширением .yml (playbook1.yml, playbook2.yml, playbook3.yml). Запустить их можно командой вида: ansible-playbook -i inventory.ini playbook1.yml
 
 ---
 
