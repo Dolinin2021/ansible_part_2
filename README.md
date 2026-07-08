@@ -29,26 +29,38 @@
 
 ```yaml
 ---
-- name: Скачивание и распаковка архива
+- name: Download and unpack archive
   hosts: all
   become: yes
+  vars:
+    download_url: "https://www.apache.org/dyn/closer.lua/kafka/4.3.1/kafka-4.3.1-src.tgz?action=download"
+    extract_dir: "/opt/kafka"
+    archive_dest: "/tmp/kafka.tgz"
+
   tasks:
-    - name: Создать папку для распаковки
+    - name: Create extraction directory
       ansible.builtin.file:
-        path: /opt/kafka_dir
+        path: "{{ extract_dir }}"
         state: directory
         mode: '0755'
 
-    - name: Скачать архив Apache Kafka
+    - name: Download the archive
       ansible.builtin.get_url:
-        url: https://apache.org
-        dest: /tmp/kafka.tgz
+        url: "{{ download_url }}"
+        dest: "{{ archive_dest }}"
+        mode: '0644'
 
-    - name: Распаковать архив
+    - name: Install tar
+      ansible.builtin.package:
+        name: tar
+        state: present
+
+    - name: Unpack the archive
       ansible.builtin.unarchive:
-        src: /tmp/kafka.tgz
-        dest: /opt/kafka_dir
+        src: "{{ archive_dest }}"
+        dest: "{{ extract_dir }}"
         remote_src: yes
+        extra_opts: [--strip-components=1]
 
 ```
 
@@ -81,7 +93,6 @@
 Сценарий задает новое приветствие, используя системную переменную.
 
 ```yaml
----
 - name: Изменение приветствия системы (motd)
   hosts: all
   become: yes
@@ -96,7 +107,10 @@
 
 ```
 
-Рекомендация: Для запуска сценариев каждый блок кода сохранён в отдельный файл с расширением .yml (playbook1.yml, playbook2.yml, playbook3.yml). Запустить их можно командой вида: ansible-playbook -i inventory.ini playbook1.yml
+<img width="1855" height="845" alt="Screenshot_11" src="https://github.com/user-attachments/assets/7d52c3d9-ab68-466f-b874-f6495969b2a4" />
+
+Рекомендация: Для запуска сценариев каждый блок кода сохранён в отдельный файл с расширением .yml (playbook1.yml, playbook2.yml, playbook3.yml). 
+Запустить их можно командой вида: ansible-playbook -i inventory.ini playbook1.yml
 
 ---
 
