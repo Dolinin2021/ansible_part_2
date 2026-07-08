@@ -110,7 +110,10 @@
 <img width="1855" height="845" alt="Screenshot_11" src="https://github.com/user-attachments/assets/7d52c3d9-ab68-466f-b874-f6495969b2a4" />
 
 Рекомендация: Для запуска сценариев каждый блок кода сохранён в отдельный файл с расширением .yml (playbook1.yml, playbook2.yml, playbook3.yml). 
-Запустить их можно командой вида: ansible-playbook -i inventory.ini playbook1.yml
+Запустить их можно командой вида: 
+```
+ansible-playbook -i inventory.ini playbook1.yml
+```
 
 ---
 
