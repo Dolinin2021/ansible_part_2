@@ -158,7 +158,7 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
 
 ### Задание 3
 
-Роль site.yml:
+Роль (site.yml):
 ```yaml
 ---
 - name: Развертывание и настройка веб-сервера
@@ -169,13 +169,80 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
 
 ```
 
-Обработчик для переазпуска сервиса Apache:
+Обработчик для переазпуска сервиса Apache (main.yml):
 ```yaml
 ---
 - name: Перезапуск Apache
   ansible.builtin.service:
     name: "{{ web_service_name }}"
     state: restarted
+
+```
+
+Этот набор задач выполняет полный цикл развертывания: от установки пакета до проверки работоспособности сайта (main.yml).
+```yaml
+---
+- name: Установка веб-сервера Apache
+  ansible.builtin.package:
+    name: "{{ web_package_name }}"
+    state: present
+
+- name: Открытие порта 80 в брандмауэре (ufw)
+  ansible.builtin.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+  ignore_errors: true # Игнорируем, если ufw не установлен
+
+- name: Генерация index.html из шаблона
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Перезапуск Apache
+
+- name: Запуск Apache и добавление в автозагрузку
+  ansible.builtin.service:
+    name: "{{ web_service_name }}"
+    state: started
+    enabled: true
+
+- name: Проверка доступности веб-сайта (ответ 200)
+  ansible.builtin.uri:
+    url: http://localhost
+    status_code: 200
+
+```
+
+Шаблон Jinja2 (index.html.j2):
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о сервере</title>
+</head>
+<body>
+    <h1>Характеристики управляемого хоста: {{ inventory_hostname }}</h1>
+    <ul>
+        <li><strong>IP-address:</strong> {{ ansible_default_ipv4.address }}</li>
+        <li><strong>CPU:</strong> {{ ansible_processor_vcpus }} ядер</li>
+        <li><strong>RAM (Total):</strong> {{ ansible_memtotal_mb }} MB</li>
+        <li><strong>Величина первого HDD:</strong> {{ ansible_devices.sda.size if ansible_devices.sda is defined else 'Диск не определен' }}</li>
+    </ul>
+</body>
+</html>
+
+```
+
+Переменные (main.yml):
+```yaml
+---
+# Имя пакета веб-сервера (зависит от ОС, для Debian/Ubuntu — apache2)
+web_package_name: apache2
+web_service_name: apache2
 
 ```
 
