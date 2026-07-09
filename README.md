@@ -61,7 +61,6 @@
         dest: "{{ extract_dir }}"
         remote_src: yes
         extra_opts: [--strip-components=1]
-
 ```
 
 `При необходимости прикрепитe сюда скриншоты
@@ -86,7 +85,6 @@
         name: tuned
         state: started
         enabled: yes
-
 ```
 
 3. Изменение приветствия системы (motd) <br>
@@ -104,7 +102,6 @@
         content: "{{ new_motd }}"
         dest: /etc/motd
         mode: '0644'
-
 ```
 
 <img width="1855" height="845" alt="Screenshot_11" src="https://github.com/user-attachments/assets/7d52c3d9-ab68-466f-b874-f6495969b2a4" />
@@ -145,7 +142,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
 
         dest: /etc/motd
         mode: '0644'
-
 ```
 
 <img width="1848" height="581" alt="Screenshot_2" src="https://github.com/user-attachments/assets/fb146fa3-12ff-4113-9a02-41968f987e94" />
@@ -166,7 +162,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
   become: true
   roles:
     - web_server
-
 ```
 
 Обработчик для переазпуска сервиса Apache (main.yml):
@@ -176,7 +171,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
   ansible.builtin.service:
     name: "{{ web_service_name }}"
     state: restarted
-
 ```
 
 Этот набор задач выполняет полный цикл развертывания: от установки пакета до проверки работоспособности сайта (main.yml).
@@ -213,7 +207,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
   ansible.builtin.uri:
     url: http://localhost
     status_code: 200
-
 ```
 
 Шаблон Jinja2 (index.html.j2):
@@ -234,7 +227,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
     </ul>
 </body>
 </html>
-
 ```
 
 Переменные (main.yml):
@@ -243,7 +235,6 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
 # Имя пакета веб-сервера (зависит от ОС, для Debian/Ubuntu — apache2)
 web_package_name: apache2
 web_service_name: apache2
-
 ```
 
 <img width="1858" height="866" alt="Screenshot_5" src="https://github.com/user-attachments/assets/15f5e64c-98e1-4526-8360-70bd90055d99" />
