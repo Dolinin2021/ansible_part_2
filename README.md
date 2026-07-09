@@ -109,6 +109,8 @@
 
 <img width="1855" height="845" alt="Screenshot_11" src="https://github.com/user-attachments/assets/7d52c3d9-ab68-466f-b874-f6495969b2a4" />
 
+<img width="837" height="805" alt="Screenshot_1" src="https://github.com/user-attachments/assets/0814ea23-d6cc-43f2-8789-6ae5cbcfadcd" />
+
 Рекомендация: Для запуска сценариев каждый блок кода сохранён в отдельный файл с расширением .yml (playbook1.yml, playbook2.yml, playbook3.yml). 
 Запустить их можно командой вида: 
 ```
