@@ -7,7 +7,7 @@
 
 ```yaml
 ---
-- name: Download and unpack archive
+- name: Скачать и распаковать архив
   hosts: all
   become: yes
   vars:
@@ -16,24 +16,24 @@
     archive_dest: "/tmp/kafka.tgz"
 
   tasks:
-    - name: Create extraction directory
+    - name: Создать каталог для распаковки
       ansible.builtin.file:
         path: "{{ extract_dir }}"
         state: directory
         mode: '0755'
 
-    - name: Download the archive
+    - name: Скачать архив
       ansible.builtin.get_url:
         url: "{{ download_url }}"
         dest: "{{ archive_dest }}"
         mode: '0644'
 
-    - name: Install tar
+    - name: Установить tar
       ansible.builtin.package:
         name: tar
         state: present
 
-    - name: Unpack the archive
+    - name: Распаковать архив
       ansible.builtin.unarchive:
         src: "{{ archive_dest }}"
         dest: "{{ extract_dir }}"
