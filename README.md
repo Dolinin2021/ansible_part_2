@@ -119,7 +119,6 @@ ansible-playbook -i inventory.ini playbook1.yml
 ```
 [servers]
 yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
-
 ```
 
 ---
