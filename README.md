@@ -175,5 +175,4 @@ yc_vm ansible_host=<IP-адрес ВМ> ansible_user=ubuntu ansible_ssh_private_
 ....
 ```
 
-`При необходимости прикрепитe сюда скриншоты
-![Название скриншота](ссылка на скриншот)`
+<img width="1858" height="866" alt="Screenshot_5" src="https://github.com/user-attachments/assets/15f5e64c-98e1-4526-8360-70bd90055d99" />
