@@ -1,0 +1,6 @@
+---
+- name: Развертывание и настройка веб-сервера
+  hosts: servers
+  become: true
+  roles:
+    - web_server

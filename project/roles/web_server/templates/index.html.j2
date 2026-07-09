@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о сервере</title>
+</head>
+<body>
+    <h1>Характеристики управляемого хоста: {{ inventory_hostname }}</h1>
+    <ul>
+        <li><strong>IP-address:</strong> {{ ansible_default_ipv4.address }}</li>
+        <li><strong>CPU:</strong> {{ ansible_processor_vcpus }} ядер</li>
+        <li><strong>RAM (Total):</strong> {{ ansible_memtotal_mb }} MB</li>
+        <li><strong>Величина первого HDD:</strong> {{ ansible_devices.sda.size if ansible_devices.sda is defined else 'Диск не определен' }}</li>
+    </ul>
+</body>
+</html>

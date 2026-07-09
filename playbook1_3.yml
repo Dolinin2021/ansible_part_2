@@ -1,0 +1,12 @@
+---
+- name: Изменение приветствия системы (motd)
+  hosts: all
+  become: yes
+  vars:
+    new_motd: "Добро пожаловать на наш защищенный сервер!\n"
+  tasks:
+    - name: Записать новое приветствие в файл
+      ansible.builtin.copy:
+        content: "{{ new_motd }}"
+        dest: /etc/motd
+        mode: '0644'

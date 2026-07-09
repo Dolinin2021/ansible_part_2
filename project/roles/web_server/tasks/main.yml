@@ -1,0 +1,32 @@
+---
+- name: Установка веб-сервера Apache
+  ansible.builtin.package:
+    name: "{{ web_package_name }}"
+    state: present
+
+- name: Открытие порта 80 в брандмауэре (ufw)
+  ansible.builtin.ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+  ignore_errors: true # Игнорируем, если ufw не установлен
+
+- name: Генерация index.html из шаблона
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Перезапуск Apache
+
+- name: Запуск Apache и добавление в автозагрузку
+  ansible.builtin.service:
+    name: "{{ web_service_name }}"
+    state: started
+    enabled: true
+
+- name: Проверка доступности веб-сайта (ответ 200)
+  ansible.builtin.uri:
+    url: http://localhost
+    status_code: 200

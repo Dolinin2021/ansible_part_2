@@ -1,0 +1,15 @@
+---
+- name: Установка и настройка службы tuned
+  hosts: all
+  become: yes
+  tasks:
+    - name: Установить пакет tuned
+      ansible.builtin.package:
+        name: tuned
+        state: present
+
+    - name: Запустить tuned и добавить в автозагрузку
+      ansible.builtin.service:
+        name: tuned
+        state: started
+        enabled: yes
